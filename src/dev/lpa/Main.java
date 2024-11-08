@@ -9,14 +9,16 @@ public class Main {
   
   public static void main(String[] args) {
     
-    URI timsSite = URI.create("https://learnprogramming.academy/courses/complete-java-masterclass");
+    URI baseSite = URI.create("https://learnprogramming.academy");
+    URI timsSite = URI.create("/courses/complete-java-masterclass");
     print(timsSite);
     
     try {
       URI uri = new URI("http://user:pw@store.com:5000/products/phones?os=android#samsung");
       print(uri);
       
-      URL url = timsSite.toURL();
+      URI masterClass = baseSite.resolve(timsSite);
+      URL url = masterClass.toURL();
       System.out.println(url);
       print(url);
     } catch (URISyntaxException | MalformedURLException e) {
