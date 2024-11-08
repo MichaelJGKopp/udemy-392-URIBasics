@@ -16,11 +16,35 @@ public class Main {
       URI uri = new URI("http://user:pw@store.com:5000/products/phones?os=android#samsung");
       print(uri);
       
-      URL url = uri.toURL();
+      URL url = timsSite.toURL();
       System.out.println(url);
+      print(url);
     } catch (URISyntaxException | MalformedURLException e) {
       throw new RuntimeException(e);
     }
+  }
+  
+  private static void print(URL url) {
+    
+    System.out.printf("""
+        ---------------------------------------------
+          Authority: %s
+            User info: %s
+            Host: %s
+            Port: %s
+            Path: %s
+            Query: %s
+        """,
+//      url.getScheme(),
+//      url.getSchemeSpecificPart(),
+      url.getAuthority(),
+      url.getUserInfo(),
+      url.getHost(),
+      url.getPort(),
+      url.getPath(),
+      url.getQuery()
+//      url.getFragment()
+    );
   }
   
   private static void print(URI uri) {
