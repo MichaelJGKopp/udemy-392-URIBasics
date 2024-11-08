@@ -1,31 +1,44 @@
 package dev.lpa;
 
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 public class Main {
   
   public static void main(String[] args) {
-  
-    URI timsSite = URI.create("https://learnprogramming.academy/");
+    
+    URI timsSite = URI.create("https://learnprogramming.academy/courses/complete-java-masterclass");
     print(timsSite);
+    
+    try {
+      URI uri = new URI("http://user:pw@store.com:5000/products/phones?os=android#samsung");
+      print(uri);
+      
+      URL url = uri.toURL();
+      System.out.println(url);
+    } catch (URISyntaxException | MalformedURLException e) {
+      throw new RuntimeException(e);
+    }
   }
   
   private static void print(URI uri) {
     
     System.out.printf("""
-      ---------------------------------------------
-      [scheme:]scheme-specific-part[#fragment]
-      ---------------------------------------------
-      Scheme: %s
-      Scheme-specific-part: %s
-        Authority: %s
-          User info: %s
-          Host: %s
-          Port: %s
-          Path: %s
-          Query: %s
-      Fragment: %s
-      """,
+        ---------------------------------------------
+        [scheme:]scheme-specific-part[#fragment]
+        ---------------------------------------------
+        Scheme: %s
+        Scheme-specific-part: %s
+          Authority: %s
+            User info: %s
+            Host: %s
+            Port: %s
+            Path: %s
+            Query: %s
+        Fragment: %s
+        """,
       uri.getScheme(),
       uri.getSchemeSpecificPart(),
       uri.getAuthority(),
