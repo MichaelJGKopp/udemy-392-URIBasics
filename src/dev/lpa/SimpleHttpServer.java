@@ -4,6 +4,8 @@ import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.net.HttpURLConnection.HTTP_OK;
 
@@ -23,6 +25,10 @@ public class SimpleHttpServer {
         
         String data = new String(exchange.getRequestBody().readAllBytes());
         System.out.println("Body data: " + data);
+        
+        Map<String, String> parameters = parseParameters(data);
+        System.out.println(parameters);
+        
         if (requestMethod.equals("POST")) {
           visitorCounter++;
         }
@@ -49,5 +55,19 @@ public class SimpleHttpServer {
     } catch (IOException e) {
       System.out.println(e.getMessage());
     }
+  }
+  
+  // some Http servers already do this, this simple one doesn't
+  private static Map<String, String> parseParameters(String requestBody) {
+    
+    Map<String, String> parameters = new HashMap<>();
+    String[] pairs = requestBody.split("&");
+    for (String pair : pairs) {
+      String[] keyValue = pair.split("=");
+      if (keyValue.length == 2) {
+        parameters.put(keyValue[0], keyValue[1]);
+      }
+    }
+    return parameters;
   }
 }
