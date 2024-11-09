@@ -34,8 +34,10 @@ public class AsyncHandlerClient {
         client.sendAsync(request, HttpResponse.BodyHandlers.ofLines());
       
       responseFuture.thenApply(AsyncHandlerClient::filterResponse)
-                      .thenApply(AsyncHandlerClient::transformResponse)
-                        .thenAccept(AsyncHandlerClient::printResponse);
+        .thenApply(AsyncHandlerClient::transformResponse)
+        .thenAccept(AsyncHandlerClient::printResponse)
+        .thenRun(() -> {for (int i = 0; i < 10; i++) System.out.print(i);})
+        .thenRun(System.out::println);
       System.out.println("Ten Jobs to do besides handling the response.");
       int jobs = 0;
       while (jobs++ < 10) {
@@ -65,7 +67,7 @@ public class AsyncHandlerClient {
     System.out.println("Filtering Response ...");
     if (response.statusCode() == HTTP_OK) {
       return response.body()
-        .filter(s -> s.contains("<h1>"));
+               .filter(s -> s.contains("<h1>"));
     } else {
       return Stream.empty();
     }
