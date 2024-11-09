@@ -33,7 +33,9 @@ public class AsyncHandlerClient {
       CompletableFuture<HttpResponse<Stream<String>>> responseFuture =
         client.sendAsync(request, HttpResponse.BodyHandlers.ofLines());
       
-      responseFuture.thenAccept(AsyncHandlerClient::handleResponse);
+      responseFuture.thenApply(AsyncHandlerClient::filterResponse)
+                      .thenApply(AsyncHandlerClient::transformResponse)
+                        .thenAccept(AsyncHandlerClient::printResponse);
       System.out.println("Ten Jobs to do besides handling the response.");
       int jobs = 0;
       while (jobs++ < 10) {
@@ -56,5 +58,28 @@ public class AsyncHandlerClient {
     } else {
       System.out.println("Error reading response " + response.uri());
     }
+  }
+  
+  private static Stream<String> filterResponse(HttpResponse<Stream<String>> response) {
+    
+    System.out.println("Filtering Response ...");
+    if (response.statusCode() == HTTP_OK) {
+      return response.body()
+        .filter(s -> s.contains("<h1>"));
+    } else {
+      return Stream.empty();
+    }
+  }
+  
+  private static Stream<String> transformResponse(Stream<String> response) {
+    
+    System.out.println("transforming Response ");
+    return response.map(s -> s.replaceAll("<[^>]*>", "").strip());
+  }
+  
+  private static void printResponse(Stream<String> response) {
+    
+    System.out.println("printing Response ");
+    response.forEach(System.out::println);
   }
 }
