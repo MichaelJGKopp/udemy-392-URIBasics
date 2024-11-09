@@ -39,7 +39,7 @@ public class SimpleHttpServer {
         String response = """
           <html>
             <body>
-              <H1>Hello World from My Http Server</H1>
+              <h1>Hello World from My Http Server</h1>
               <p>Number of Visitors who signed up = %d<p>
               <form method="post">
                 <label for="first">First name:</label>
