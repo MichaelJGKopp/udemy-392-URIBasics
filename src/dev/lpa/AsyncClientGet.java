@@ -33,12 +33,12 @@ public class AsyncClientGet {
       CompletableFuture<HttpResponse<Stream<String>>> responseFuture =
         client.sendAsync(request, HttpResponse.BodyHandlers.ofLines());
       
-      while (!responseFuture.isDone()) {
+      while ((response = responseFuture.getNow(null)) == null) {
         System.out.print(". ");
         TimeUnit.SECONDS.sleep(1);
       }
       System.out.println();
-      response = responseFuture.join();  // .get()
+//      response = responseFuture.join();  // .get()
       handleResponse(response);
       
     } catch (IOException | URISyntaxException | InterruptedException e) {
