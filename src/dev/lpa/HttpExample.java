@@ -14,7 +14,8 @@ public class HttpExample {
   public static void main(String[] args) {
     
     try {
-      URL url = new URL("https://example.com/extra");
+//      URL url = new URL("https://example.com/extra");
+      URL url = new URL("http://localhost:8080");
       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
       connection.setRequestMethod("GET");
       connection.setRequestProperty("User-Agent", "Chrome");
